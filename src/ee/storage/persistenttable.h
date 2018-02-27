@@ -52,10 +52,11 @@
 #include <iostream>
 #include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
-#include "common/types.h"
+#include "common/debuglog.h"
 #include "common/ids.h"
-#include "common/valuevector.h"
 #include "common/tabletuple.h"
+#include "common/types.h"
+#include "common/valuevector.h"
 #include "execution/VoltDBEngine.h"
 #include "storage/CopyOnWriteIterator.h"
 #include "storage/ElasticIndex.h"
@@ -573,6 +574,10 @@ private:
 
     void snapshotFinishedScanningBlock(TBPtr finishedBlock, TBPtr nextBlock) {
         if (nextBlock != NULL) {
+            if (m_blocksPendingSnapshot.find(nextBlock) == m_blocksPendingSnapshot.end()) {
+                printf("Assertion botch: m_blocksPendingSnapshot.find(nextBlock) == m_blocksPendingSnapshot.end()\n");
+                PRINT_STACK_TRACE();
+            }
             assert(m_blocksPendingSnapshot.find(nextBlock) != m_blocksPendingSnapshot.end());
             m_blocksPendingSnapshot.erase(nextBlock);
             nextBlock->swapToBucket(TBBucketPtr());

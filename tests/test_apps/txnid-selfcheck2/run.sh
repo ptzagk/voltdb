@@ -90,7 +90,7 @@ function alt-jars() {
 function server() {
     jars-ifneeded
     # run the server
-    $VOLTDB init -C deployment.xml
+    $VOLTDB init -C deployment.xml --force
     $VOLTDB start -l $LICENSE -H $HOST
 }
 
@@ -131,7 +131,7 @@ function async-benchmark() {
 
 function init() {
     jars-ifneeded
-    sqlcmd < src/txnIdSelfCheck/ddl-nocat.sql
+    sqlcmd < src/txnIdSelfCheck/ddl.sql
 }
 
 function help() {
