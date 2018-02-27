@@ -22,10 +22,8 @@
 #
 # The two artifacts are:
 #   1.) The jni library, which will be in
-#           ${CMAKE_BINARY_}/nativelibs/libvoltdb-VERSION.so
-#       for Linux and
-#           ${CMAKE_BINARY_DIR}/nativelibs/libvoltdb-VERSION.dylib
-#       for Darwin.
+#           ${CMAKE_BINARY_}/nativelibs/libvoltdb-VERSION.jnilib
+#       for Linux and Darwin both.
 #   2.) The voltdbipcrun program, which is used for memory leak detection,
 #       and to debug this EE.  This will be found in
 #           ${CMAKE_BINARY_DIR}/prod/voltdbipcrun
@@ -344,6 +342,9 @@ VOLTDB_ADD_LIBRARY(${VOLTDB_LIBNAME}
   $<TARGET_OBJECTS:voltdbjniobjs>
   $<TARGET_OBJECTS:third_party_objs>
   )
+SET_TARGET_PROPERTIES(${VOLTDB_LIBNAME}
+        PROPERTIES
+        SUFFIX ${VOLTDB_JNILIB_SUFFIX})
 
 TARGET_LINK_LIBRARIES(${VOLTDB_LIBNAME}
   -L${VOLTDB_3PTY_INSTALL_PREFIX}/lib

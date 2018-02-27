@@ -38,10 +38,8 @@
 #
 # The two output artifacts are:
 #   1.) The jni library, which will be in
-#           obj/${BUILD}/ee/nativelibs/libvoltdb-VERSION.so
-#       for Linux and
-#           obj/${BUILD}/ee/nativelibs/libvoltdb-VERSION.dylib
-#       for Darwin.
+#           obj/${BUILD}/ee/nativelibs/libvoltdb-VERSION.jnilib
+#       for Linux and and Darwin both.
 #   2.) The voltdbipcrun program, which is used for memory leak detection,
 #       and to debug this EE.  This will be found in
 #           obj/${BUILD}/ee/prod/voltdbipcrun
@@ -107,7 +105,7 @@
 #       with ADD_LIBRARY, ADD_EXECUTABLE and ADD_TEST.
 #    c. There are three kinds of library, SHARED, STATIC and OBJECT.
 #       SHARED is the usual dynamically linked library, denoted by a
-#       .so or .dylib suffix.  STATIC libraries are the usual .a
+#       .jnilib, .so or .dylib suffix.  STATIC libraries are the usual .a
 #       archives, though we don't use these here.  OBJECT libraries,
 #       which we do use, are just sets of .o object files which
 #       CMake manages for us with a single name.
@@ -131,7 +129,7 @@
 # supported on Darwin.  By redefining CMAKE_CXX_COMPILER, in the usual
 # CMake way, one can change this.  New C++ compilation flags can be
 # added by defining the cmake variable VOLTDB_CXXFLAGS.  New libraries can be added
-# to the link line for libvolt-*.so by defining VOLTDB_LINK_FLAGS
+# to the link line for the target VOLTDB_LIBNAME by defining VOLTDB_LINK_FLAGS
 # and VOLTDB_LDFLAGS.  For example,
 #    cmake -DVOLT_CXX_FLAGS="-fno-use-pirates" -DVOLT_LDFLAGS="-lninjutsu".
 #
