@@ -32,6 +32,11 @@ elif [ -f  $PWD/../../log4j-allconsole.xml ]; then
     CLIENTLOG4J="$PWD/../../log4j-allconsole.xml"
 fi
 LICENSE="$VOLTDB_VOLTDB/license.xml"
+if [ ! -f "$LICENSE" ] ; then
+    if [ -f "$HOME/license.xml" ] ; then
+        cp "$HOME/license.xml" "$LICENSE"
+    fi
+fi
 HOST="localhost"
 
 # remove build artifacts
@@ -108,22 +113,30 @@ function async-benchmark-help() {
 
 function async-benchmark() {
     jars-ifneeded
+    # Arguments from the txnid2 command line for ENG-13684.
+    #     --minvaluesize 1701 --maxvaluesize 8536 --fillerrowsize 32864 --replfillerrowmb 62 --partfillerrowmb 61 --duration 600 --servers volt22bc1,volt22bc2,volt22cc1,volt22cc2,volt22dc1,volt22dc2 \
+    #     --progresstimeout 2100 --threads 118 --mpratio 0 --swapratio 0.0 --disabledthreads partLoadlt,updateclasses,replTrunclt,replLoadlt,replCappedlt,partTrunclt,partCappedlt --threadoffset 0 --ratelimit 31 --topologyaware False
     java -ea -classpath txnid.jar:$CLASSPATH: -Dlog4j.configuration=file://$CLIENTLOG4J \
         txnIdSelfCheck.Benchmark $ARGS \
-        --displayinterval=1 \
-        --duration=100 \
-        --servers=localhost \
-        --threads=20 \
-        --threadoffset=0 \
-        --minvaluesize=1024 \
-        --maxvaluesize=1024 \
-        --entropy=127 \
-        --fillerrowsize=10240 \
-        --replfillerrowmb=32 \
-        --partfillerrowmb=128 \
-        --progresstimeout=20 \
-        --usecompression=false \
-        --allowinprocadhoc=false
+        --displayinterval 1 \
+        --duration 120 \
+        --servers localhost \
+        --mpratio 0.0 \
+        --swapratio 0.0 \
+        --threads 118 \
+        --threadoffset 0 \
+        --disabledthreads partLoadlt,updateclasses,replTrunclt,replLoadlt,replCappedlt,partTrunclt,partCappedlt \
+        --ratelimit 31 \
+        --topologyaware False \
+        --minvaluesize 1701 \
+        --maxvaluesize 8036 \
+        --entropy 127 \
+        --fillerrowsize 32864 \
+        --replfillerrowmb 64 \
+        --partfillerrowmb 61 \
+        --progresstimeout 2100 \
+        --usecompression false \
+        --allowinprocadhoc false
         # --disabledthreads=ddlt,partBiglt,replBiglt,partCappedlt,replCappedlt,replLoadlt,partLoadlt,adHocMayhemThread,idpt,partTrunclt,replTrunclt
 #ddlt,clients,partBiglt,replBiglt,partCappedlt,replCappedlt,replLoadlt,partLoadlt,adHocMayhemThread,idpt,readThread,partTrunclt,replTrunclt
         # --sslfile=./keystore.props

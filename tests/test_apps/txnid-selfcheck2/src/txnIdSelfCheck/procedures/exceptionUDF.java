@@ -23,18 +23,20 @@
 
 package txnIdSelfCheck.procedures;
 
+import org.voltcore.logging.VoltLogger;
 import org.voltdb.SQLStmt;
 import org.voltdb.VoltProcedure;
 import org.voltdb.VoltTable;
 
 
 public class exceptionUDF extends VoltProcedure {
-
+    VoltLogger info = new VoltLogger(getClass().getSimpleName());
     public final SQLStmt d_getNothing = new SQLStmt(
             "select excUDF(cid) FROM dimension");
 
     public VoltTable[] run() {
         voltQueueSQL(d_getNothing);
+        info.info("Executing bad udf call.");
         VoltTable[] results = voltExecuteSQL(true);
         return results;
     }

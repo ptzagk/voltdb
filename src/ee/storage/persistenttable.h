@@ -578,7 +578,7 @@ private:
                 printf("Assertion botch: m_blocksPendingSnapshot.find(nextBlock) == m_blocksPendingSnapshot.end()\n");
                 PRINT_STACK_TRACE();
             }
-            assert(m_blocksPendingSnapshot.find(nextBlock) != m_blocksPendingSnapshot.end());
+            // assert(m_blocksPendingSnapshot.find(nextBlock) != m_blocksPendingSnapshot.end());
             m_blocksPendingSnapshot.erase(nextBlock);
             nextBlock->swapToBucket(TBBucketPtr());
         }
