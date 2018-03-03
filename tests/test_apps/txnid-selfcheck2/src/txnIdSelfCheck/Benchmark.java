@@ -537,7 +537,7 @@ public class Benchmark {
     LoadTableLoader replLoadlt = null;
     ReadThread readThread = null;
     AdHocMayhemThread adHocMayhemThread = null;
-    InvokeDroppedProcedureThread idpt = null;
+    InvokeProcedureAndUDFFailures idpt = null;
     DdlThread ddlt = null;
     List<ClientThread> clientThreads = null;
     UpdateClassesThread updcls = null;
@@ -711,7 +711,7 @@ public class Benchmark {
             }
         }
         if (!config.disabledThreads.contains("idpt")) {
-            idpt = new InvokeDroppedProcedureThread(client);
+            idpt = new InvokeProcedureAndUDFFailures(client);
             idpt.start();
         } if (!config.disabledThreads.contains("ddlt")) {
             ddlt = new DdlThread(client);
